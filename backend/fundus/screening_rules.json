@@ -1,0 +1,50 @@
+{
+  "disclaimer": "Experimental rule-based screening flags computed from classical image-processing measurements. They are not clinical diagnoses, have not been clinically validated, and must not be used for patient care.",
+  "flags": {
+    "glaucoma_suspect": {
+      "label": "Experimental glaucoma-suspect flag",
+      "combine": "any",
+      "conditions": [
+        {
+          "feature": "vcdr",
+          "op": ">=",
+          "threshold": 0.65
+        },
+        {
+          "feature": "rim_to_disc_area_ratio",
+          "op": "<",
+          "threshold": 0.4
+        }
+      ],
+      "positive_text": "Large measured cup relative to disc (experimental flag)",
+      "negative_text": "Measured cup/disc geometry below the experimental thresholds",
+      "basis": "VCDR >= 0.65 is a commonly quoted 'suspicious' level in screening literature; it depends on correct cup segmentation, which is unreliable from colour alone. STARE has no glaucoma labels, so this rule is unevaluated on STARE (REFUGE labels are needed)."
+    },
+    "dr_lesions": {
+      "label": "Experimental DR-lesion flag",
+      "combine": "at_least",
+      "conditions": [
+        {
+          "feature": "ma_count",
+          "op": ">=",
+          "threshold": 15
+        },
+        {
+          "feature": "he_count",
+          "op": ">=",
+          "threshold": 5
+        },
+        {
+          "feature": "ex_count",
+          "op": ">=",
+          "threshold": 10
+        }
+      ],
+      "positive_text": "Lesion-candidate burden above experimental thresholds",
+      "negative_text": "Lesion-candidate burden below experimental thresholds",
+      "basis": "Per-category candidate-count thresholds were chosen by Youden index on the STARE tuning split (im0001-im0100) against the STARE manifestation grades for MA (9), hemorrhage (11, 12) and exudate (13, 14). The flag requires at least 2 of the 3 categories above threshold. Candidate counts are never zero on normal images because of false positives, hence count thresholds.",
+      "min_count": 2,
+      "evaluation": "STARE diagnosis codes 7/8 as reference; see /api/evaluation/summary (dr_flag). A simpler 'any category' rule grid-searched on the tuning split scored higher there but generalised worse; the 2-of-3 rule was chosen with knowledge of held-out results, so its held-out estimate is optimistic."
+    }
+  }
+}

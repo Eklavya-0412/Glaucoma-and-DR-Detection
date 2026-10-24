@@ -1,0 +1,21 @@
+# datasets and generated artifacts (large / licence-restricted)
+data/*
+!data/README.md
+outputs/
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+# node
+frontend/node_modules/
+frontend/dist/
+# env / secrets
+.env
+*.local
+# editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
